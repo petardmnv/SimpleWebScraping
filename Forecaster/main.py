@@ -44,27 +44,25 @@ for script in scripts:
 		current_date.append("0000")
 
 		hour = int(datetime.now().strftime("%H"))
-		day = date.today().strftime("%A")
 
+		day = date.today().strftime("%A")
 		print(f"Weather forecast for {day} is:\n")
+
+
 		for i in range(hour, 25):
 			if i == 24:
-				'''new_day = int() + 1
-				current_date[1] = str(new_day)'''
+				new_day = int(datetime.now().strftime("%d")) + 1
+				current_date[1] = str(new_day).rjust(2, '0')
 				current_date[2] = "00"
-			elif i < 10:
-				new_hour = '0'
-				new_hour += str(i)
-				current_date[2] = new_hour
 			else:
-				new_hour = str(i)[0]
-				new_hour += str(i)[1]
-				current_date[2] = new_hour
+				current_date[2] = str(i).rjust(2, '0')
+
 			time_index = find_all(current_result, "".join(current_date))
+			
 			for t in time_index:
 				print(f"Time: {current_result[t + 2][0]}{current_result[t + 2][1]}:{current_result[t + 2][2]}{current_result[t + 2][3]}")	
 				print(f"Temp: {current_result[t + 4]}")
-				print(f"Rain percentage: {current_result[t + 14]}")
+				print(f"Rain per square meter: {current_result[t + 14]}")
 				if current_result[t + 22] == "Ясно":
 					print(f"The weather is: {current_result[t + 22]}")
 				else:		
