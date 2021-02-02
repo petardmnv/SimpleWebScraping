@@ -5,6 +5,10 @@ from datetime import date, datetime
 
 URL = "https://www.foreca.bg/Bulgaria/Sofia--Capital/Sofia/10-day-forecast?date=2021-02-01"
 
+def get_url_for_current_date(url: str) -> str:
+	current_date = date.today().strftime("%Y-%m-%d")
+	new_url = url[:-10] + current_date
+	return new_url
 page = requests.get(URL)
 soup = BeautifulSoup(page.content, 'lxml')
 scripts = soup.findAll('script')
@@ -26,8 +30,6 @@ def find_all(text: list, word: str) -> list:
 
 for script in scripts:
 	if "var daily_data" in str(script.string):
-		#result = json.loads(script.string)
-		# script.string - better
 		result = (script.string).replace("}", '')
 		result = result.replace(";", '')
 		result = result.replace(",", ' ')
@@ -39,8 +41,8 @@ for script in scripts:
 		current_result = make_string_to_list(result)
 		current_date = []
 		current_date.append(date.today().strftime("%Y%m"))
-		current_date.append(datetime.now().strftime("%d"))
-		current_date.append(datetime.now().strftime("%H"))
+		current_date.append(date.today().strftime("%d"))
+		current_date.append(date.today().strftime("%H"))
 		current_date.append("0000")
 
 		hour = int(datetime.now().strftime("%H"))
@@ -58,7 +60,7 @@ for script in scripts:
 				current_date[2] = str(i).rjust(2, '0')
 
 			time_index = find_all(current_result, "".join(current_date))
-			
+
 			for t in time_index:
 				print(f"Time: {current_result[t + 2][0]}{current_result[t + 2][1]}:{current_result[t + 2][2]}{current_result[t + 2][3]}")	
 				print(f"Temp: {current_result[t + 4]}")
