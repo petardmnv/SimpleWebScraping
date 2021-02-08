@@ -9,7 +9,7 @@ def get_url_for_current_date(url: str) -> str:
 	current_date = date.today().strftime("%Y-%m-%d")
 	new_url = url[:-10] + current_date
 	return new_url
-page = requests.get(URL)
+page = requests.get(get_url_for_current_date(URL))
 soup = BeautifulSoup(page.content, 'lxml')
 scripts = soup.findAll('script')
 
